@@ -94,17 +94,77 @@ http://localhost:5000
 
 ---
 
-## ✅ Example Assembly Code
+---
 
-Here's a quick example to get started:
+## 📌 Features
 
+- **Interactive Web Interface**: Write and assemble assembly code directly in your browser.
+- **Syntax Highlighting**: Integrated CodeMirror editor for clear and readable assembly code.
+- **Binary & Hexadecimal Output**: Easily toggle between binary and hexadecimal representations of machine code.
+- **Robust Error Handling**: Clear, informative error messages to help debug assembly code.
+- **Two-Pass Assembly Process**:
+  - First pass identifies labels and addresses.
+  - Second pass encodes instructions into machine-readable binary format.
+
+---
+
+
+## 💻 Supported Instructions
+
+| Instruction Type | Mnemonics Supported                             |
+|------------------|--------------------------------------------------|
+| Data Movement    | `mov`, `ld`, `st`, `ncp`                         |
+| Arithmetic       | `add`, `sub`, `mul`, `div`, `mod`, `cmp`         |
+| Logical          | `and`, `or`, `not`                               |
+| Shift Operations | `isl`, `isr`, `asr`                              |
+| Branching        | Unconditional: `b`, `call`, `ret`Conditional: `.beg`, `.bgt` |
+
+---
+
+## 📌 Example Usage
+
+### Assembly Code Example:
 ```assembly
+
+@1. Example
+
 mov r1, #10
 mov r2, #20
 add r3, r1, r2
 st r3, [100]
+
+@2. Example
+
+mov R0, #1       @ Initialize R0 with 1
+mov R1, #5       @ Set counter to 5
+
+loop:
+mul R0, R0, R1   @ Multiply R0 by R1
+sub R1, R1, #1   @ Decrement counter
+cmp R1, #0       @ Compare counter with 0
+.bgt R1, R0, loop @ Loop if greater than zero
 ```
 
+### Output:
+The assembler generates machine code in both binary and hexadecimal formats displayed clearly on the web interface.
+
+---
+
+## ⚠️ Common Challenges & Solutions
+
+| Challenge                 | Solution Provided                                 |
+|---------------------------|---------------------------------------------------|
+| Label Resolution Errors   | Two-pass assembler resolves labels accurately.    |
+| Incorrect Register Usage  | Robust validation ensures registers within range (R0-R15). |
+| Immediate Parsing Issues  | Supports decimal (`#10`), hexadecimal (`#0xA`), binary (`#0b1010`). |
+| Branch Offset Calculation | Automatically calculates relative offsets correctly. |
+
+---
+
+## 📚 Future Enhancements
+
+- Integration with a SimpleRISC simulator/emulator for direct execution of assembled programs.
+- Support for multiprocessor simulations or FPGA-based hardware implementations.
 ---
 
 ## 🚩 Troubleshooting Common Issues
@@ -133,4 +193,10 @@ This project is open-source and available under the MIT License.
 For questions or support, please open an issue in this repository or contact the maintainer directly.
 
 Happy assembling! 🚀
+
+---
+
+## 📅 Last Updated
+
+Tuesday, March 18, 2025
 
