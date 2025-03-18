@@ -1,4 +1,3 @@
-# assembler.py
 opcodes = {
     'mov': 0b00000,
     'add': 0b00001, 'sub': 0b00010, 'mul': 0b00011, 'div': 0b00100, 'mod': 0b00101, 'cmp': 0b00110,
@@ -97,7 +96,7 @@ class Assembler:
                     imm = parse_immediate(operands[1])
                     machine_code = (opcodes[instr] << 11) | (rd << 7) | (imm & 0x7F) | 1  
                     
-            elif instr in ['add', 'sub', 'mul', 'div', 'mod', 'and', 'or', 'cmp']:
+            elif instr in ['add', 'sub', 'mul', 'div', 'mod', 'and', 'or']:
                 
                 if len(operands) != 3:
                     raise ValueError(f"{instr} requires 3 operands, got {len(operands)}")
@@ -111,6 +110,20 @@ class Assembler:
                 else:
                     imm = parse_immediate(operands[2])
                     machine_code = (opcodes[instr] << 11) | (rd << 7) | (rs1 << 3) | (imm & 0x7) | 1  
+            
+            elif instr == 'cmp':
+                if len(operands) != 2:
+                    raise ValueError(f"cmp requires 2 operands,got {len(operands)}")
+                rd = parse_register(operands[0])
+                
+                if(operands[1].startswith('R') or operands[1].startswith('r')):
+                    rs = parse_register(operands[1])
+                    machine_code = (opcodes[instr] << 11) | (rd << 7) | (rs << 3) | 0
+                else:
+                    imm = parse_immediate(operands[1])
+                    machine_code = (opcodes[instr] << 11) | (rd << 7) | (imm & 0x7F) | 1
+                
+            
                     
             elif instr == 'not':
                 
@@ -214,7 +227,14 @@ class Assembler:
             address += 1
 
     def assemble(self, src):
-        lines = [line.strip() for line in src.split('\n')]
+        lines = []
+        
+        for line in src.split('\n'):
+            line = line.split('@')[0].strip()
+            
+            if line:
+                lines.append(line)
+        
         self.labels = {}
         self.code = []
         self.first_pass(lines)
